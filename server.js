@@ -10,7 +10,7 @@ mongoose.connect(process.env.MONGOCON);
 app.listen(1339, err => {
     console.log('media stream started');
 });
-app.get('/media/:type/:fileId', (req, res) => {
+app.get('/media/:type/:fileId/:userId', (req, res) => {
     let cred;
     try {
         cred = auth(req);
@@ -34,7 +34,7 @@ app.get('/media/:type/:fileId', (req, res) => {
     let fileId, userId, type, path;
     try {
         fileId = req.params.fileId;
-        userId = req.body.userId;
+        userId = req.params.userId;
         type = req.params.type;
     }
     catch (err) {
