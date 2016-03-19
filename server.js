@@ -19,11 +19,23 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
     catch (err) {
         return res.status(500).send(err);
     }
+    let mime;
+    switch (type) {
+        case 'audio':
+            mime = 'audio/mp3';
+            break;
+        case 'video':
+            mime = 'video/webm';
+            break;
+        case 'image':
+            mime = 'image/jpeg';
+            break;
+    }
     path = '../data/users/' + userId + '/previews/' + type + '/' + fileId;
     let file = fs.createReadStream(path);
     let total = fs.statSync(path).size;
     let decipher = crypto.createDecipher('aes-256-ctr', 'test123');
-    res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'audio/mp3' });
+    res.writeHead(200, { 'Content-Length': total, 'Content-Type': mime });
     file.pipe(decipher).pipe(res);
 });
 //# sourceMappingURL=server.js.map
