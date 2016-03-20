@@ -16,7 +16,7 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
         fileId = req.params.fileId;
         userId = req.params.userId;
         type = req.params.type;
-        path = '../data/users/' + userId + '/previews/' + type + '/' + fileId;
+        path = '../data/users/' + userId + '/' + fileId;
     }
     catch (err) {
         return res.status(500).send(err);
