@@ -21,7 +21,7 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
     catch (err) {
         return res.status(500).send(err);
     }
-    file_1.file.findById(userId, (err, file) => {
+    file_1.file.findById(fileId, (err, file) => {
         path = '../data/users/' + userId + '/' + fileId + file.extension;
         switch (type) {
             case 'audio':
