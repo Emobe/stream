@@ -42,10 +42,6 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
         let total = fs.statSync(path).size;
         let decipher = crypto.createDecipher('aes-256-ctr', 'test123');
         res.writeHead(200, { 'Content-Length': total, 'Content-Type': mime });
-        fileStream.pipe(decipher);
-        fileStream.on('end', _ => {
-            console.log(decipher);
-        });
         fileStream.pipe(decipher).pipe(convert.stdin);
         convert.stdout.pipe(res);
     });
