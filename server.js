@@ -41,7 +41,7 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
         let convert = childProcess.spawn('ffmpeg', args, { stdio: ['pipe', 'pipe', 'inherit'] });
         let total = fs.statSync(path).size;
         let decipher = crypto.createDecipher('aes-256-ctr', 'test123');
-        res.writeHead(200, { 'Content-Length': total, 'Content-Type': mime });
+        res.writeHead(200, { 'Transfer-Encoding': 'chunked', 'Content-Length': total, 'Content-Type': mime });
         if (format === "webm" || format === "mp3" || format == "png") {
             fileStream.pipe(decipher).pipe(res);
         }
