@@ -28,22 +28,27 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
         switch (type) {
             case 'video':
                 mime = 'video/webm';
-                args = ['-i', 'pipe:0', '-f', format, '-q:v', '5', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-f', 'webm', 'pipe:1'];
+                args = ['-f', format, '-i', 'pipe:0', '-q:v', '8', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-f', 'webm', 'pipe:1'];
                 break;
             case 'audio':
                 mime = 'audio/mp3';
-                args = ['-i', 'pipe:0', '-f', format, '-q:a', '8', '-vn', '-f', 'mp3', 'pipe:1'];
+                args = ['-f', format, '-i', 'pipe:0', '-f', format, '-q:a', '10', '-vn', '-f', 'mp3', 'pipe:1'];
                 break;
             case 'image':
-                mime = 'image/jpeg';
+                mime = 'image/png';
                 break;
         }
         let convert = childProcess.spawn('ffmpeg', args, { stdio: ['pipe', 'pipe', 'inherit'] });
         let total = fs.statSync(path).size;
         let decipher = crypto.createDecipher('aes-256-ctr', 'test123');
         res.writeHead(200, { 'Content-Length': total, 'Content-Type': mime });
-        fileStream.pipe(decipher).pipe(convert.stdin);
-        convert.stdout.pipe(res);
+        if (format === "mp4" || format === "mp3" || format == "png") {
+            fileStream.pipe(decipher).pipe(res);
+        }
+        else {
+            fileStream.pipe(decipher).pipe(convert.stdin);
+            convert.stdout.pipe(res);
+        }
     });
 });
 //# sourceMappingURL=server.js.map
