@@ -10,6 +10,14 @@ mongoose.connect(process.env.MONGOCON);
 app.listen(1339, err => {
     console.log('media stream started');
 });
+app.get('/media/:type/:fileId/:userId/pre', (req, res) => {
+    file_1.file.findById(req.params.fileId, (err, result) => {
+        if (result.processed)
+            return res.status(200).end();
+        else
+            return res.status(500).end();
+    });
+});
 app.get('/media/:type/:fileId/:userId/', (req, res) => {
     let cred;
     let fileId, userId, type, path, mime, args;

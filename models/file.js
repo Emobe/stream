@@ -11,6 +11,7 @@ exports.fileSchema = new Schema({
     mime: String,
     path: String,
     extension: String,
+    processed: Boolean,
     sharing: Boolean,
     icon: String,
     type: String,
