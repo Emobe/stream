@@ -23,16 +23,16 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
     }
     file_1.file.findById(fileId, (err, file) => {
         path = '../data/users/' + userId + '/' + fileId + file.extension;
-        let fileStream = fs.createReadStream(path);
+        let fileStream = fs.createReadStream(path), format = file.extension.substring(1);
         console.log(path);
         switch (type) {
-            case 'audio':
-                mime = 'audio/mp3';
-                args = ['pipe:0', '-q:v', '5', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-f', 'webm', 'pipe:1'];
-                break;
             case 'video':
                 mime = 'video/webm';
-                args = ['-i', path, '-q:a', '8', '-vn', '-f', 'mp3', 'pipe:1'];
+                args = ['pipe:0', '-f', format, '-q:v', '5', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-f', 'webm', 'pipe:1'];
+                break;
+            case 'audio':
+                mime = 'audio/mp3';
+                args = ['pipe:0', '-f', format, '-q:a', '8', '-vn', '-f', 'mp3', 'pipe:1'];
                 break;
             case 'image':
                 mime = 'image/jpeg';
