@@ -27,7 +27,7 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
         switch (type) {
             case 'audio':
                 mime = 'audio/mp3';
-                args = ['-i', path, '-q:v', '5', 'c:v', 'libvpx', '-c:a', 'libvorbis', '-f', 'webm', 'pipe:1'];
+                args = ['-i', path, '-q:v', '5', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-f', 'webm', 'pipe:1'];
                 break;
             case 'video':
                 mime = 'video/webm';
