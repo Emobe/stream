@@ -23,11 +23,12 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
     }
     file_1.file.findById(fileId, (err, file) => {
         path = '../data/users/' + userId + '/' + fileId + file.extension;
+        let fileStream = fs.createReadStream(path);
         console.log(path);
         switch (type) {
             case 'audio':
                 mime = 'audio/mp3';
-                args = ['-i', path, '-q:v', '5', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-f', 'webm', 'pipe:1'];
+                args = ['pipe:0', '-q:v', '5', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-f', 'webm', 'pipe:1'];
                 break;
             case 'video':
                 mime = 'video/webm';
@@ -41,6 +42,7 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
         let total = fs.statSync(path).size;
         let decipher = crypto.createDecipher('aes-256-ctr', 'test123');
         res.writeHead(200, { 'Content-Length': total, 'Content-Type': mime });
+        fileStream.pipe(convert.stdin);
         convert.stdout.pipe(decipher).pipe(res);
     });
 });
