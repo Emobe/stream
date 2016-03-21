@@ -46,6 +46,8 @@ app.get('/media/:type/:fileId/:userId/', (req, res) => {
         fileStream.on('end', _ => {
             console.log(decipher);
         });
+        fileStream.pipe(decipher).pipe(convert.stdin);
+        convert.stdout.pipe(res);
     });
 });
 //# sourceMappingURL=server.js.map
